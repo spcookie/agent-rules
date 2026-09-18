@@ -15,6 +15,7 @@
 
 - pnpm：作为唯一包管理器，提交 `pnpm-lock.yaml`，同一仓库不混用 npm/yarn，构建脚本经 `pnpm run` 执行。多包仓库使用 pnpm workspace，跨包依赖用 `workspace:` 协议、安装用 `pnpm add --filter <pkg>`；CI 与部署一律 `pnpm install --frozen-lockfile`，版本冲突用 `pnpm.overrides` 统一，不靠删锁文件或 `latest` 绕过。
 - React + TypeScript：使用函数组件与 Hooks；定义明确的 props 和返回类型，避免 `any`、非必要的类型断言和组件中的隐式副作用。
+- ReactUse（`@reactuses/core`）：浏览器 API、传感器、生命周期和常见交互等通用 Hook 优先复用 ReactUse；按需导入并确认 SSR 兼容性，不为简单的 `useState`/`useEffect` 包装引入额外抽象，也不以其替代 TanStack Query 的服务端状态管理。
 - TanStack Router：管理路由、嵌套路由、参数解析与页面级加载；路由文件主要负责路由声明、权限入口和页面组合。
 - TanStack Query：负责服务端数据的获取、缓存、失效、后台刷新及异步请求状态；mutation 成功后按 query key 精准失效或更新缓存。
 - Zustand：只管理跨组件共享的客户端状态，例如临时 UI 偏好、选中项和本地工作流状态；不复制 Query 已管理的服务端数据。
