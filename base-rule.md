@@ -13,6 +13,7 @@
 
 ## 2. 前端技术栈
 
+- pnpm：作为唯一包管理器，提交 `pnpm-lock.yaml`，同一仓库不混用 npm/yarn，构建脚本经 `pnpm run` 执行。多包仓库使用 pnpm workspace，跨包依赖用 `workspace:` 协议、安装用 `pnpm add --filter <pkg>`；CI 与部署一律 `pnpm install --frozen-lockfile`，版本冲突用 `pnpm.overrides` 统一，不靠删锁文件或 `latest` 绕过。
 - React + TypeScript：使用函数组件与 Hooks；定义明确的 props 和返回类型，避免 `any`、非必要的类型断言和组件中的隐式副作用。
 - TanStack Router：管理路由、嵌套路由、参数解析与页面级加载；路由文件主要负责路由声明、权限入口和页面组合。
 - TanStack Query：负责服务端数据的获取、缓存、失效、后台刷新及异步请求状态；mutation 成功后按 query key 精准失效或更新缓存。
@@ -59,6 +60,7 @@ src/
 
 ## 4. 后端技术栈
 
+- Gradle Kotlin DSL：构建脚本只用 `.kts`（`build.gradle.kts`、`settings.gradle.kts`），不新增 Groovy DSL；依赖与插件版本集中在 version catalog（`gradle/libs.versions.toml`），模块内不重复写版本号。统一用 wrapper（`./gradlew`）构建，wrapper 提交到仓库，CI 与本地使用同一版本。
 - Kotlin + Ktor：Ktor 负责 HTTP 入口、路由、认证、序列化与基础设施装配；路由不直接编写业务规则或 SQL。
 - Project Reactor、kotlinx-coroutines-reactor：需要响应式编程时统一使用 Reactor；Reactor 与 Kotlin 协程互操作使用 `kotlinx-coroutines-reactor`，不在领域层暴露 `Mono`、`Flux` 等框架类型。
 - Koin：负责依赖注入与应用启动时的装配；领域模型和领域规则不依赖 Koin 注解/API。
